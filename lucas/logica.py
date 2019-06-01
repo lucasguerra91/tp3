@@ -1,4 +1,5 @@
-import turtle
+import tortuga as t
+import pila as p
 
 
 def cargar_archivo(archivo):
@@ -7,7 +8,7 @@ def cargar_archivo(archivo):
     """
 
     with open(archivo, 'r')as f:
-        angulo = int(f.readline())
+        angulo = float(f.readline())
         axioma = f.readline().rstrip('\n')
         traducciones = {}
 
@@ -28,39 +29,57 @@ def traducir(axioma, traducciones, cantidad):
     secuencia = ''
     while cantidad > 0:
         for c in axioma:
-            if c in traducciones:
-                secuencia += traducciones.get(c)
-            else:
-                secuencia += c
+            secuencia += traducciones.get(c, c)
+            # if c in traducciones:
+            #     secuencia += traducciones.get(c)
+            # else:
+            #     secuencia += c
         return traducir(secuencia, traducciones, cantidad - 1)
     return axioma
 
 
-def dibujar_con_tortuga(secuencia, angulo):
+def crear_svg(destino, secuencia, angulo):
     """
 
     :param secuencia:
     :param angulo:
     :return:
     """
+    unidad = 3
+    with open(destino, 'w') as f:
 
-    tortuga = turtle.Turtle()
+        f.write('<svg viewBox="-400 -500 800 600" xmlns="http://www.w3.org/2000/svg">\n')
+
+        tortuguero = p.Pila()
+        tortuguero.apilar(t.Tortuga(0, 0, 270, True))
+
+        dibujar(secuencia, tortuguero, unidad, angulo, f)
+
+        f.write('</svg>\n')
+
+
+def dibujar(secuencia, tortuguero, unidad, angulo, f):
+
     for c in secuencia:
-
         if c == 'F' or c == 'G':
-            tortuga.fd(2)
+            tortuguero.ver_tope().avanzar(unidad, f)
 
         if c == 'f' or c == 'g':
-            tortuga.up()
-            tortuga.fd(2)
-            tortuga.down()
+            tortuguero.ver_tope().pluma_arriba()
+            tortuguero.ver_tope().avanzar(unidad)
+            tortuguero.ver_tope().pluma_abajo()
 
         if c == '+':
-            tortuga.rt(angulo)
+            tortuguero.ver_tope().girar_derecha(angulo)
 
         if c == '-':
-            tortuga.lt(angulo)
+            tortuguero.ver_tope().girar_izquierda(angulo)
 
         if c == '|':
-            tortuga.rt(180)
+            tortuguero.ver_tope().girar_derecha(180)
 
+        if c == '[':
+            tortuguero.apilar(tortuguero.ver_tope().clonar())
+
+        if c == ']':
+            tortuguero.desapilar()
