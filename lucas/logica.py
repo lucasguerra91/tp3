@@ -30,20 +30,18 @@ def traducir(axioma, traducciones, cantidad):
     while cantidad > 0:
         for c in axioma:
             secuencia += traducciones.get(c, c)
-            # if c in traducciones:
-            #     secuencia += traducciones.get(c)
-            # else:
-            #     secuencia += c
         return traducir(secuencia, traducciones, cantidad - 1)
     return axioma
 
 
 def crear_svg(destino, secuencia, angulo):
     """
-
-    :param secuencia:
-    :param angulo:
-    :return:
+    Recibe como parametros el archivo .svg de destino, la secuencia de comandos
+    y el angulo de giro.
+    Pre-condiciones: la secuencia de comandos debe haber sido generada previamente
+    a partir de un axioma y un diccionario de traducciones.
+    Post: Se genera el archivo .svg indicado contiendo las etiquetas xml generadas
+    a partir de dibujar la secuencia de comandos utilizando la clase tortuga.
     """
     unidad = 3
     with open(destino, 'w') as f:
@@ -59,7 +57,12 @@ def crear_svg(destino, secuencia, angulo):
 
 
 def dibujar(secuencia, tortuguero, unidad, angulo, f):
-
+    """
+    Recibe una secuencia de comandos, una pila de tortugas, una unidad , un angulo
+    y el archivo en el cual se debe escribir.
+    La funcion escribe directamente sobre el archivo los comandos incluidos en la
+    secuencia. 
+    """
     for c in secuencia:
         if c == 'F' or c == 'G':
             tortuguero.ver_tope().avanzar(unidad, f)
