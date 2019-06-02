@@ -59,6 +59,13 @@ class Tortuga:
         if self.pluma.esta_abajo:
             destino.write(f'\t<line x1="{x}" y1="{y}" x2="{self.x}" y2="{self.y}" stroke-width="{self.pluma.get_ancho()}" stroke="{self.pluma.get_color()}" />\n')
 
+    def circulo(self, unidad, destino):
+
+        x, y = self.ubicacion()
+
+        if self.pluma.esta_abajo:
+            destino.write(f'\t<circle cx = "{x}" cy = "{y}" r = "{self.pluma.get_ancho()}" fill = "{self.pluma.get_color()}" />\n')
+
     def clonar(self):
         """Devuelve una nueva tortuga con la ubicacion, orientacion y estado de la tortuga actual. """
         return Tortuga(self.x, self.y, self.orientacion, self.pluma)

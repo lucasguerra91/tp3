@@ -98,3 +98,6 @@ def dibujar(secuencia, tortuguero, unidad, angulo, f):
 
         if c == 'a':
             tortuguero.ver_tope().pluma.cambiar_ancho(2)
+
+        if c == 'L':
+            tortuguero.ver_tope().circulo(unidad, f)
