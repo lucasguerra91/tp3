@@ -6,22 +6,34 @@ from pila import *
 def procesador(archivo):
 	try:
 		with open(archivo) as archivo:
-			angulo = float(archivo.readline().rstrip('\n'))
+			try:
+				angulo = float(archivo.readline().rstrip('\n'))
+			
+			except ValueError:
+				archivo_inválido()
+		
 			axioma = archivo.readline().rstrip('\n')
+
+			if not axioma:
+				archivo_inválido()
 
 			reglas = {}
 
 			for linea in archivo:
-				precesor, sucesor = linea.rstrip('\n').split()
-				reglas[precesor] = sucesor
 
+				try:
+					precesor, sucesor = linea.rstrip('\n').split()
+					reglas[precesor] = sucesor
+
+				except ValueError:
+					archivo_inválido()
+
+			if not reglas:
+				archivo_inválido()
+	
 	except IOError:
 		print(f'No se encontró {archivo}.')
-		return
-
-	except ValueError:
-		print('Ángulo inválido.')
-		return
+		raise IOError
 
 	return angulo, axioma, reglas
 
@@ -40,103 +52,68 @@ def generador_sistema(axioma, reglas, n):
 
 def dibujar(angulo, sistema, nombre_imagen):
 	pila_tortugas = Pila()
-	pila_tortugas.apilar(Tortuga(0, 0, 0, Pluma()))
+	pila_tortugas.apilar(Tortuga(0, 0, 270, Pluma()))
 	tortuga_activa = pila_tortugas.ver_tope()
 
-	try:
-		with open(nombre_imagen, 'w') as imagen:
-			imagen.write(
-				f'<svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">\n')
+	with open(nombre_imagen, 'w') as imagen:
+		imagen.write(
+			f'<svg viewBox="-400 -500 800 600" xmlns="http://www.w3.org/2000/svg">\n')
 
-			longitud = len(sistema)
+		for c in sistema:
 
-			i = 0
+			if c in ('F','G'):
+				posicion_inicial = tortuga_activa.ubicacion()
+				tortuga_activa.adelante(3)
+				posicion_final = tortuga_activa.ubicacion()
+				linea = armar_linea(posicion_inicial,posicion_final,tortuga_activa)
+				imagen.write(linea)
 
-			while i < longitud:
+			elif c in ('f','g'):
 
-				caracter = sistema[i]
+				tortuga_activa.pluma_arriba()
+				tortuga_activa.adelante(3)
+				tortuga_activa.pluma_abajo()
 
-				if caracter in ('F', 'G'):
+			elif c == '+':
+				tortuga_activa.derecha(angulo)
 
-					pasos = iterador(sistema, i, longitud, ('F', 'G'))
+			elif c == '-':
+				tortuga_activa.izquierda(angulo)
+				
+			elif c == '|':
+				tortuga_activa.izquierda(180)
 
-					i += pasos-1
+			elif c == '[':
+				pila_tortugas.apilar(tortuga_activa.clonar())
 
-					imagen.write(armar_linea(
-						modulo_FG(tortuga_activa, pasos), tortuga_activa))
+			elif c == ']':
+				pila_tortugas.desapilar()
 
-				elif caracter in ('f', 'g'):
-
-					pasos = iterador(sistema, i, longitud, ('f', 'g'))
-
-					i += pasos-1
-
-					imagen.write(armar_linea(
-						modulo_fg(tortuga_activa, pasos), tortuga_activa))
-
-				elif caracter == '+':
-					tortuga_activa.derecha(angulo)
-
-				elif caracter == '-':
-					tortuga_activa.izquierda(angulo)
-
-				elif caracter == '|':
-					tortuga_activa.izquierda(180)
-
-				elif caracter == '[':
-					pila_tortugas.apilar(tortuga_activa.clonar())
-
-				elif caracter == ']':
-					pila_tortugas.desapilar()
-
-				i += 1
-
-			imagen.write('</svg>')
-	except IOError:
-		print(f"No se encontró {nombre_imagen}.")
+		imagen.write('</svg>')
 
 
-def armar_linea(posiciones, tortuga):
+def armar_linea(p1,p2,tortuga):
 
 	pluma = tortuga.devolver_pluma()
 	ancho = pluma.devolver_ancho()
 	color = pluma.devolver_color()
 
-	posicion_inicial,posicion_final = posiciones
-	x1, y1 = posicion_inicial
-	x2, y2 = posicion_final
+	x1, y1 = p1
+	x2, y2 = p2
 
-	linea = f'<line x1="{x1}" y1="{-y1}" x2="{x2}" y2="{-y2}" stroke-width="{ancho}" stroke="{color}"/>\n'
+	linea = f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke-width="{ancho}" stroke="{color}"/>\n'
 	return linea
 
+def archivo_inválido():
+	print("Archivo de instrucciones inválido.")
+	print('''
+Ejemplo de un archivo válido:
 
-def iterador(sistema, i, longitud, tupla):
-	pasos = 1
+27.2
+X
+X X-F+G
+F FG+
 
-	while i < longitud - 1:
-		siguiente = sistema[i+pasos]
-
-		if siguiente not in tupla:
-			break
-
-		pasos += 1
-
-	return pasos
-
-
-def modulo_FG(tortuga,pasos):
-	posicion_inicial = tortuga.ubicacion()
-	tortuga.adelante(pasos)
-	posicion_final = tortuga.ubicacion()
-
-	return posicion_inicial, posicion_final
-
-
-def modulo_fg(tortuga,pasos):
-	tortuga_activa.pluma_arriba()
-	posicion_inicial = tortuga.ubicacion()
-	tortuga_activa.adelante(pasos)
-	posicion_final = tortuga.ubicacion()
-	tortuga_activa.pluma_abajo()
-
-	return posicion_inicial, posicion_final
+Donde la primera línea es el ángulo, la segunda el axioma y las siguientes líneas \
+las reglas de cambio, con los símbolos separados de su traducción por un espacio.''')
+	raise ValueError
