@@ -5,31 +5,35 @@ COMANDO = sys.argv
 
 
 def main():
-    if len(COMANDO) != 4:
-        print('Comando inválido.')
-        return
+	if len(COMANDO) != 4:
+		print('Comando inválido.')
+		return
 
-    _, archivo, iteraciones, nombre_imagen = COMANDO
+	_, archivo, iteraciones, nombre_imagen = COMANDO
 
-    if nombre_imagen[-4:] != ".svg":
-        nombre_imagen += ".svg"
+	if nombre_imagen[-4:] != ".svg":
+		nombre_imagen += ".svg"
 
-    try:
-        iteraciones = int(iteraciones)
+	try:
+		iteraciones = int(iteraciones)
 
-    except:
-        print('Cantidad iteraciones inválida')
-        return
+		if not iteraciones > 0:
+   			raise ValueError 
 
-    try:
-        angulo, axioma, reglas = procesador(archivo)
+	except:
+		print('Cantidad de iteraciones inválida.')
+		return
 
-    except:
-        return
 
-    sistema = generador_sistema(axioma, reglas, iteraciones)
-    dibujar(angulo, sistema, nombre_imagen)
-    print('Imagen lista.')
+	try:
+		angulo, axioma, reglas = procesador(archivo)
+
+	except:
+		return
+
+	sistema = generador_sistema(axioma, reglas, iteraciones)
+	dibujar(angulo, sistema, nombre_imagen)
+	print('Imagen lista.')
 
 
 main()
