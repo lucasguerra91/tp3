@@ -37,9 +37,11 @@ class Tortuga:
     # Metodos
 
     def girar_derecha(self, angulo):
+        """ Gira la orientacion de la tortuga a la derecha en el angulo pasado por parametro """
         self.orientacion = (self.orientacion + angulo) % 360
 
     def girar_izquierda(self, angulo):
+        """ Gira la orientacion de la tortuga a la izquierda en el angulo pasado por parametro """
         self.orientacion = (self.orientacion - angulo) % 360
 
     def avanzar(self, unidad, destino):
@@ -47,6 +49,7 @@ class Tortuga:
         el cual escribir.
         Actualiza la ubicacion de la tortuga y escribe en el archivo de destino
         si la pluma esta abajo-"""
+
         x, y = self.ubicacion()
 
         self.x = self.x + unidad * round(math.cos(math.radians(self.orientacion)), 2)
@@ -56,4 +59,5 @@ class Tortuga:
             destino.write(f'\t<line x1="{x}" y1="{y}" x2="{self.x}" y2="{self.y}" stroke-width="1" stroke="black" />\n')
 
     def clonar(self):
+        """Devuelve una nueva tortuga con la ubicacion, orientacion y estado de la tortuga actual. """
         return Tortuga(self.x, self.y, self.orientacion, self.pluma)
