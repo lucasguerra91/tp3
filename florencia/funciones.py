@@ -60,7 +60,11 @@ def dibujar(angulo, sistema, nombre_imagen):
 
                 i += pasos-1
 
+                posicion_inicial = tortuga_activa.ubicacion() 
                 tortuga_activa.adelante(pasos)
+                posicion_final = tortuga_activa.ubicacion()
+
+                imagen.write(armar_linea(posicion_inicial,posicion_final,tortuga_activa))
 
             elif caracter in ('f', 'g'):
                 pasos = 1
@@ -76,9 +80,14 @@ def dibujar(angulo, sistema, nombre_imagen):
                 i += pasos-1
 
                 tortuga_activa.pluma_arriba()
+                posicion_inicial = tortuga.ubicacion()
                 tortuga_activa.adelante(pasos)
+                posicion_final = tortuga.ubicacion()
                 tortuga_activa.pluma_abajo()
 
+                imagen.write(armar_linea(posicion_inicial,posicion_final,tortuga_activa))
+
+               
             elif caracter == '+':
                 tortuga_activa.derecha(angulo)
 
@@ -97,3 +106,14 @@ def dibujar(angulo, sistema, nombre_imagen):
             i += 1
 
         imagen.write('</svg>')
+
+def armar_linea(posicion_inicial,posicion_final,tortuga):
+    pluma = tortuga.pluma()
+    ancho = pluma.devolver_ancho()
+    color = pluma.devolver_color()
+
+    x1,y1 = posicion_inicial
+    x2,y2 = posicion_final
+
+    linea = f'<line x1="{x1}" y1="{-y1}" x2="{x2}" y2="{-y2}" stroke-width="{ancho}" stroke="{color}"/>\n'
+    return linea
