@@ -4,116 +4,135 @@ import pila
 
 
 def procesador(archivo):
+	try:
+		with open(archivo) as archivo:
+			angulo = float(archivo.readline().rstrip('\n'))
+			axioma = archivo.readline().rstrip('\n')
 
-    with open(archivo) as archivo:
-        angulo = float(archivo.readline().rstrip('\n'))
-        axioma = archivo.readline().rstrip('\n')
+			reglas = {}
 
-        reglas = {}
+			for linea in archivo:
+				precesor, sucesor = linea.rstrip('\n').split()
+				reglas[precesor] = sucesor
 
-        for linea in archivo:
-            precesor, sucesor = linea.rstrip('\n').split()
-            reglas[precesor] = sucesor
+	except IOError:
+		print(f'No se encontró {archivo}.')
+		return
 
-    return angulo, axioma, reglas
+	except ValueError:
+		print('Ángulo inválido.')
+		return
+
+	return angulo, axioma, reglas
 
 
 def sistema(axioma, reglas, n):
-    if n == 1:
-        return axioma
+	if n == 1:
+		return axioma
 
-    cadena_final = ""
+	cadena_final = ""
 
-    for c in axioma:
-        cadena_final += reglas.get(c, c)
+	for c in axioma:
+		cadena_final += reglas.get(c, c)
 
-    return sistema(cadena_final, reglas, n-1)
+	return sistema(cadena_final, reglas, n-1)
 
 
 def dibujar(angulo, sistema, nombre_imagen):
-    pila_tortugas = Pila()
-    pila_tortugas.apilar(Tortuga(0, 0, 0, Pluma()))
-    tortuga_activa = pila_tortugas.ver_tope()
+	pila_tortugas = Pila()
+	pila_tortugas.apilar(Tortuga(0, 0, 0, Pluma()))
+	tortuga_activa = pila_tortugas.ver_tope()
 
-    with open(nombre_imagen, 'w') as imagen:
-        imagen.write(
-            f'<svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">\n')
+	try:
+		with open(nombre_imagen, 'w') as imagen:
+			imagen.write(
+				f'<svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">\n')
 
-        longitud = len(sistema)
+			longitud = len(sistema)
 
-        i = 0
+			i = 0
 
-        while i < longitud:
+			while i < longitud:
 
-            caracter = sistema[i]
+				caracter = sistema[i]
 
-            if caracter in ('F', 'G'):
-                pasos = 1
+				if caracter in ('F', 'G'):
 
-                while i < longitud - 1:
-                    siguiente = sistema[i+pasos]
+					pasos = iterador(sistema, i, longitud, ('F', 'G'))
 
-                    if siguiente not in ('F', 'G'):
-                        break
+					i += pasos-1
 
-                    pasos += 1
+					imagen.write(armar_linea(modulo_FG(tortuga_activa)))
 
-                i += pasos-1
+				elif caracter in ('f', 'g'):
 
-                posicion_inicial = tortuga_activa.ubicacion() 
-                tortuga_activa.adelante(pasos)
-                posicion_final = tortuga_activa.ubicacion()
+					pasos = iterador(sistema, i, longitud, ('f', 'g'))
 
-                imagen.write(armar_linea(posicion_inicial,posicion_final,tortuga_activa))
+					i += pasos-1
 
-            elif caracter in ('f', 'g'):
-                pasos = 1
+					imagen.write(armar_linea(modulo_fg(tortuga_activa)))
 
-                while i < longitud - 1:
-                    siguiente = sistema[i+1]
+				elif caracter == '+':
+					tortuga_activa.derecha(angulo)
 
-                    if siguiente not in ('f', 'g'):
-                        break
+				elif caracter == '-':
+					tortuga_activa.izquierda(angulo)
 
-                    pasos += 1
+				elif caracter == '|':
+					tortuga_activa.izquierda(180)
 
-                i += pasos-1
+				elif caracter == '[':
+					pila_tortugas.apilar(tortuga_activa.clonar())
 
-                tortuga_activa.pluma_arriba()
-                posicion_inicial = tortuga.ubicacion()
-                tortuga_activa.adelante(pasos)
-                posicion_final = tortuga.ubicacion()
-                tortuga_activa.pluma_abajo()
+				elif caracter == ']':
+					pila_tortugas.desapilar()
 
-                imagen.write(armar_linea(posicion_inicial,posicion_final,tortuga_activa))
+				i += 1
 
-               
-            elif caracter == '+':
-                tortuga_activa.derecha(angulo)
+			imagen.write('</svg>')
+	except:
+		print(f"No se encontró {nombre_imagen}.")
 
-            elif caracter == '-':
-                tortuga_activa.izquierda(angulo)
 
-            elif caracter == '|':
-                tortuga_activa.izquierda(180)
+def armar_linea(posicion_inicial, posicion_final, tortuga):
+	pluma = tortuga.pluma()
+	ancho = pluma.devolver_ancho()
+	color = pluma.devolver_color()
 
-            elif caracter == '[':
-                pila_tortugas.apilar(tortuga_activa.clonar())
+	x1, y1 = posicion_inicial
+	x2, y2 = posicion_final
 
-            elif caracter == ']':
-                pila_tortugas.desapilar()
+	linea = f'<line x1="{x1}" y1="{-y1}" x2="{x2}" y2="{-y2}" stroke-width="{ancho}" stroke="{color}"/>\n'
+	return linea
 
-            i += 1
 
-        imagen.write('</svg>')
+def iterador(sistema, i, longitud, tupla):
+	pasos = 1
 
-def armar_linea(posicion_inicial,posicion_final,tortuga):
-    pluma = tortuga.pluma()
-    ancho = pluma.devolver_ancho()
-    color = pluma.devolver_color()
+	while i < longitud - 1:
+		siguiente = sistema[i+pasos]
 
-    x1,y1 = posicion_inicial
-    x2,y2 = posicion_final
+		if siguiente not in tupla:
+			break
 
-    linea = f'<line x1="{x1}" y1="{-y1}" x2="{x2}" y2="{-y2}" stroke-width="{ancho}" stroke="{color}"/>\n'
-    return linea
+		pasos += 1
+
+	return pasos
+
+
+def modulo_FG(tortuga):
+	posicion_inicial = tortuga.ubicacion()
+	tortuga.adelante(pasos)
+	posicion_final = tortuga.ubicacion()
+
+	return posicion_inicial, posicion_final, tortuga
+
+
+def modulo_fg(tortuga):
+	tortuga_activa.pluma_arriba()
+	posicion_inicial = tortuga.ubicacion()
+	tortuga_activa.adelante(pasos)
+	posicion_final = tortuga.ubicacion()
+	tortuga_activa.pluma_abajo()
+
+	return posicion_inicial, posicion_final, tortuga
