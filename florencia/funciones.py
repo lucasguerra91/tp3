@@ -1,6 +1,6 @@
-import tortuga
-import pluma
-import pila
+from tortuga import *
+from pluma import *
+from pila import *
 
 
 def procesador(archivo):
@@ -26,7 +26,7 @@ def procesador(archivo):
 	return angulo, axioma, reglas
 
 
-def sistema(axioma, reglas, n):
+def generador_sistema(axioma, reglas, n):
 	if n == 1:
 		return axioma
 
@@ -35,7 +35,7 @@ def sistema(axioma, reglas, n):
 	for c in axioma:
 		cadena_final += reglas.get(c, c)
 
-	return sistema(cadena_final, reglas, n-1)
+	return generador_sistema(cadena_final, reglas, n-1)
 
 
 def dibujar(angulo, sistema, nombre_imagen):
@@ -62,7 +62,8 @@ def dibujar(angulo, sistema, nombre_imagen):
 
 					i += pasos-1
 
-					imagen.write(armar_linea(modulo_FG(tortuga_activa)))
+					imagen.write(armar_linea(
+						modulo_FG(tortuga_activa, pasos), tortuga_activa))
 
 				elif caracter in ('f', 'g'):
 
@@ -70,7 +71,8 @@ def dibujar(angulo, sistema, nombre_imagen):
 
 					i += pasos-1
 
-					imagen.write(armar_linea(modulo_fg(tortuga_activa)))
+					imagen.write(armar_linea(
+						modulo_fg(tortuga_activa, pasos), tortuga_activa))
 
 				elif caracter == '+':
 					tortuga_activa.derecha(angulo)
@@ -90,15 +92,17 @@ def dibujar(angulo, sistema, nombre_imagen):
 				i += 1
 
 			imagen.write('</svg>')
-	except:
+	except IOError:
 		print(f"No se encontró {nombre_imagen}.")
 
 
-def armar_linea(posicion_inicial, posicion_final, tortuga):
-	pluma = tortuga.pluma()
+def armar_linea(posiciones, tortuga):
+
+	pluma = tortuga.devolver_pluma()
 	ancho = pluma.devolver_ancho()
 	color = pluma.devolver_color()
 
+	posicion_inicial,posicion_final = posiciones
 	x1, y1 = posicion_inicial
 	x2, y2 = posicion_final
 
@@ -120,19 +124,19 @@ def iterador(sistema, i, longitud, tupla):
 	return pasos
 
 
-def modulo_FG(tortuga):
+def modulo_FG(tortuga,pasos):
 	posicion_inicial = tortuga.ubicacion()
 	tortuga.adelante(pasos)
 	posicion_final = tortuga.ubicacion()
 
-	return posicion_inicial, posicion_final, tortuga
+	return posicion_inicial, posicion_final
 
 
-def modulo_fg(tortuga):
+def modulo_fg(tortuga,pasos):
 	tortuga_activa.pluma_arriba()
 	posicion_inicial = tortuga.ubicacion()
 	tortuga_activa.adelante(pasos)
 	posicion_final = tortuga.ubicacion()
 	tortuga_activa.pluma_abajo()
 
-	return posicion_inicial, posicion_final, tortuga
+	return posicion_inicial, posicion_final

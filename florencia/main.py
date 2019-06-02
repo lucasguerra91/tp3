@@ -1,27 +1,26 @@
 import sys
-from funciones import procesador, sistema, dibujar
+from funciones import procesador, generador_sistema, dibujar
 
 COMANDO = sys.argv
 
 
 def main():
-	if len(COMANDO) != 4:
-		print('Comando inválido.')
+    if len(COMANDO) != 4:
+        print('Comando inválido.')
 
-	_, archivo, iteraciones, nombre_imagen = COMANDO
+    _, archivo, iteraciones, nombre_imagen = COMANDO
 
-	try:
-		iteraciones = int(iteraciones)
+    try:
+        iteraciones = int(iteraciones)
 
-	except:
-		print('Cantidad iteraciones inválida')
-		return
+    except:
+        print('Cantidad iteraciones inválida')
+        return
 
-  angulo, axioma, reglas = procesador(archivo)
-  sistema(axioma, reglas, iteraciones)
-  dibujar(angulo, sistema, nombre_imagen)
-
-  print('Imagen lista.')
+    angulo, axioma, reglas = procesador(archivo)
+    sistema = generador_sistema(axioma, reglas, iteraciones)
+    dibujar(angulo, sistema, nombre_imagen)
+    print('Imagen lista.')
 
 
 main()
