@@ -1,4 +1,5 @@
 import math
+import pluma as p
 
 
 class Tortuga:
@@ -9,7 +10,7 @@ class Tortuga:
     def __init__(self, x, y, orientacion, pluma):
         self.x = x
         self.y = y
-        self.pluma = pluma
+        self.pluma = p.Pluma()
         self.orientacion = orientacion
 
     # Getters and setters
@@ -22,17 +23,17 @@ class Tortuga:
         """ Devuelve el angulode la orientacion actual de la Tortuga ."""
         return self.orientacion
 
-    def pluma(self):
-        """ Devuelve el estado actual de la pluma de la Tortuga ."""
-        return self.pluma
-
-    def pluma_abajo(self):
-        """ Cambia el estado de la pluma hacia abajo (True - escribir)"""
-        self.pluma = True
-
-    def pluma_arriba(self):
-        """ Cambia el estado de la pluma hacia ariiba (False - no escribir)"""
-        self.pluma = False
+    # def pluma(self):
+    #     """ Devuelve el estado actual de la pluma de la Tortuga ."""
+    #     return self.pluma
+    #
+    # def pluma_abajo(self):
+    #     """ Cambia el estado de la pluma hacia abajo (True - escribir)"""
+    #     self.pluma = True
+    #
+    # def pluma_arriba(self):
+    #     """ Cambia el estado de la pluma hacia ariiba (False - no escribir)"""
+    #     self.pluma = False
 
     # Metodos
 
@@ -55,8 +56,8 @@ class Tortuga:
         self.x = self.x + unidad * round(math.cos(math.radians(self.orientacion)), 2)
         self.y = self.y + unidad * round(math.sin(math.radians(self.orientacion)), 2)
 
-        if self.pluma:
-            destino.write(f'\t<line x1="{x}" y1="{y}" x2="{self.x}" y2="{self.y}" stroke-width="1" stroke="black" />\n')
+        if self.pluma.esta_abajo:
+            destino.write(f'\t<line x1="{x}" y1="{y}" x2="{self.x}" y2="{self.y}" stroke-width="{self.pluma.get_ancho()}" stroke="{self.pluma.get_color()}" />\n')
 
     def clonar(self):
         """Devuelve una nueva tortuga con la ubicacion, orientacion y estado de la tortuga actual. """
