@@ -51,7 +51,8 @@ class Tortuga:
 				f'\t<line x1="{x}" y1="{y}" x2="{self.x}" y2="{self.y}" stroke-width="{self.pluma.obtener_ancho()}" stroke="{self.pluma.obtener_color()}" />\n')
 
 	def circulo(self, unidad, destino):
-
+		""" Recibe una unidad y el archivo de destino. Si la pluma esta abajo,
+		dibuja un circulo de centro x e y (ubicacion actual) y radio ancho de la pluma"""
 		x, y = self.ubicacion()
 
 		if self.pluma.esta_abajo:

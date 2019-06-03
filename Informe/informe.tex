@@ -104,72 +104,240 @@
 
 
 \begin{description}
-	\item \textbf{Consigna} \\ Implementar un programa que permita generar im\'agenes fractales, mediante un algoritmo basado en sistemas-L, una simulaci\'on de gr\'aficos tortuga y el formato de im\'agenes est\'andar SVG. \\[0.5cm]
+	\item \textbf{Consigna} \\ Implementar un programa que permita generar im\'agenes fractales, mediante un algoritmo basado en sistemas-L, una simulaci\'on de gr\'aficos tortuga y el formato de im\'agenes est\'andar SVG. \\[0.2cm]
+
+\begin{huge}
 	\begin{center}
-		\textbf{Referencias \\[1cm]}
+		\textbf{Referencias \\[0.5cm]}
 	\end{center}	 
-	 \item \textbf{Gr\'aficos Tortuga} \\[0.5cm] 
+\end{huge}
+%----------------------------------------------------------------------------------------
+% Resumen de lo que pide tortuga
+%----------------------------------------------------------------------------------------
+
+	 \item \textbf{Gr\'aficos Tortuga} \\[0.2cm] 
 		Es un m\'etodo para generar im\'agenes usando un cursor (la tortuga) relativo a unas coordenadas cartesianas. \\ 	
+		
 		La tortuga tiene tres atributos: 
-		\begin{itemize}
+			\begin{itemize}
 				\item \textbf{Posici\'on:} en el plano (que puede expresado en coordenadas cartesianas con dos n\'umeros reales (x , y)). La tortuga comienza en la posición (0, 0).  \\
-				\item \textbf{Orientaci\'on:}\\
-				\item \textbf{Pluma:}\\
+				\item \textbf{Orientaci\'on:} Expresada como un \'angulo. \\
+				\item \textbf{Pluma:} teniendo atributos como color, ancho y un indicador de pluma arriba y abajo. La tortuga comienza con la pluma abajo.\\
 			\end{itemize}
-
-\end{description}
-
-	\begin{itemize}
-		\item El juego comienza con todas las celdas cubiertas. Cada celda puede estar ocultando tanto una mina como un espacio vac\'io\\
-		\item El jugador puede descubrir una celda por vez.\\
-			\begin{itemize}
-				\item Si se descubre un espacio que contiene una mina el juego finaliza. \\
-				\item Si se selecciona un lugar vac\'io debe mostrarse la cantidad de minas que tiene a su alrededor esa posici\'on. (Nota: A diferencia del Buscaminas original, los casilleros que no tengan minas a su alrededor no reaccionar\'an en cadena con sus adyacentes)
-			\end{itemize}
-		\item En cualquier momento el jugador puede colocar o quitar banderas en celdas cubiertas. Una celda marcada con una bandera sirve para indicar que probablemente contiene una mina. \\	
-			\begin{itemize}
-				\item Una celda marcada con una bandera no puede ser descubierta.
-			\end{itemize}
-		\item El juego termina cuando todas las celdas que no contienen minas hayan sido descubiertas.
-	
-	\end{itemize}
- \newpage
- 
- 
- \begin{Huge}
-	\begin{center}
-		\textbf{Concluciones \\[1cm]}
-	\end{center}	 
-\end{Huge}
-
-\begin{description}
-	\item \textbf{Desaf\'ios}\\
+		
+		La tortuga se mueve con comandos relativos a su posici\'on, como \Ovalbox{\bf  adelante 10} y \Ovalbox{\bf  gira a la izquierda 90$^{\circ}$}. Si la pluma est\'a "abajo", la tortuga dibujar\'a una línea recta cada vez que avance.
+		
+		\item En nuestra implementaci\'on, la tortuga deber\'a ser capaz de responder, al menos, a los siguientes comandos:
 		
 		\begin{itemize}
-			\item Uno de los primeros inconvenientes con los que me top\'e fue como imprimir los \'indices del tablero, hace mucho no lo hac\'ia, y me robo un poco de tiempo acomodarlos dentro de los b\'ucles con los que recorr\'ia el tablero.
-			\item Para poder operar sobre el tablero y a la vez ir mostr\'andoselo al usuario, resolv\'i utilizar dos, para separar la l\'ogica y tambi\'en para poder hacer pruebas, visualizando en que lugar estaban las minas.
-			\item A la hora de colocar las minas en el tablero, utilic\'e la librer\'a \textbf{random} para darle un poco de azar a la selecci\'on de los \'indices. Adem\'as de devolverme el tablero con las minas cargadas, mi funci\'on me devuelve una tupla con las ubicaciones de las minas, esto agiliza en parte las consultas. Use tuplas para no mandarme alguna macana y cambiarles el valor por error.
-			\item Quiz\'as el desaf\'io mas interesante fue el de validar lo que el usuario ingresaba, utilizando la funcion \Ovalbox{\bf  search} de la libreria de expresiones regulares de Python, logr\'e verificar si lo que el usuario ingreso coincidia con el patr\'on \textbf{fila - columna - bandera} . La funci\'on \Ovalbox{\bf  search} devuelve los valores ingresados, separados en una especie de grupo, lo que permite accederlos a traves de un \'indice. Bastante limpia y pr\'actica.
-			\item Punto que no termine de entender, y tampoco encontr\'e mucha informaci\'on fue acerca del funcionamiento de las banderas, si bien mi buscaminas permite colocarlas y retirarlas (informando cuando se lo hace), no les d\'i otra utilidad.
-			\item Por \'ultimo, en lo que m\'as tiempo \''invert\'i\'', fu\'e en la b\'usqueda de las minas adyacentes, intent\'e no utilizar demasiadas l\'ineas de c\'odigo, pero el objetivo principal era que el programa funcione y no se rompa por un \'indice fuera de rango.
+			\item \textbf{\Ovalbox{\bf  adelante(n)}:} Avanza n unidades en la direcci\'on actual. Si la pluma est\'a abajo, dibuja una l\'inea recta entre las posiciones inicial y final..  \\
+			\item \Ovalbox{\bf  derecha( $\alpha$)} , \Ovalbox{\bf  izquierda( $\alpha$)}: Gira seg\'un el \'angulo $\alpha$  a la derecha o izquierda.
+			\item \Ovalbox{\bf  pluma \textunderscore arriba()} , \Ovalbox{\bf  pluma \textunderscore abajo()}: Asigna el estado de la pluma. 92  \\[0.5cm] 
 		\end{itemize}
 
-\end{description}
+%----------------------------------------------------------------------------------------
+% Resumen de sistema-L
+%----------------------------------------------------------------------------------------
 
-\newpage
+
+	 \item \textbf{Sistemas-L} \\[0.5cm] 
+	Un sistema-L o un sistema de Lindenmayer es un conjunto de s\'imbolos y reglas que tiene una naturaleza recursiva y que permite, entre otras cosas, generar im\'agenes fractales. \\
+
+	Un sistema-L est\'a formado por: 
+			\begin{itemize}
+				\item \textbf{Alfabeto:} Conjunto de todos los s\'imbolos v\'alidos.  \\
+				\item \textbf{Axioma:} Una cadena de s\'imbolos del alfabeto que define el estado inicial del sistema. \\
+				\item \textbf{Reglas de transformaci\'on:} Cada regla de transformaci\'n consiste de una cadena predecesora y una cadena sucesora..\\
+			\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+% Resumen de svg
+%----------------------------------------------------------------------------------------
+
+	\item \textbf{El formato SVG} \\[0.5cm] 
+	\textbf{Scalable Vector Graphics} o SVG es un formato de archivo basado en XML que permite codificar im\'agenes.
+
+	Un ejemplo de una imagen simple codificada en formato SVG es:
+	
+	\begin{lstlisting}
+
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"> 
+  <rect width="300" height="200" fill="red" />
+  <circle cx="150" cy="100" r="80" fill="green" />
+  <text x="150" y="125" font-size="60" text-anchor="middle" fill="white">SVG</text>
+</svg>
+	\end{lstlisting}
 
 \begin{figure}[hbt!]
 	\center
-	\includegraphics[width=1\textwidth]{img/ejecucion_cmd.PNG}
+	\includegraphics[width=0.5\textwidth]{img/ejemplo_svg.png}
 	\caption{
-	\label{fig:my-label} Ejecuci\'on en consola. }
+	\label{fig:my-label} Ejemplo im\'agen SVG. }
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+% El programa
+%----------------------------------------------------------------------------------------
+	\item \textbf{El programa} \\[0.2cm] 
+
+	El programa debe recibir tres par\'ametros por la l\'inea de comandos (recordar sys.argv): \\[0.1cm] 
+	\begin{itemize}
+		\item El nombre del archivo que contiene la descripci\'on del sistema-L.  \\
+		\item La cantidad de iteraciones a procesar. \\
+		\item El nombre del archivo SVG a escribir.\\
+	\end{itemize}
+
+\textbf{Por ejemplo:}	
+	\begin{lstlisting}
+$ python tp3.py arbol.sl 3 arbol.svg
+	\end{lstlisting}
+
+\end{description}
+
+ \newpage
+ 
+
+
+
+%----------------------------------------------------------------------------------------
+% DISEÑO
+%----------------------------------------------------------------------------------------
+
+ \begin{Huge}
+	\begin{center}
+		\textbf{Diseño \\[1cm]}
+	\end{center}	 
+\end{Huge}
+
+
+
+
+	\begin{figure}[hbt!]
+		\center
+		\includegraphics[width=1\textwidth]{img/tp3.png}
+		\caption{
+		\label{fig:my-label} Diseño UML. }
+	\end{figure}
+
+
+%----------------------------------------------------------------------------------------
+% MAIN
+%----------------------------------------------------------------------------------------
+	 \begin{huge}
+		\textbf{Main}\\[0.2cm]
+	\end{huge}
+	Se encarga de controlar los par\'ametros ingresados por el usuario y realizar las llamadas a funciones principales. Utilizamos un \Ovalbox{\bf try} para manejar los errores que puedan surgir. \\[0.5cm]
+
+%----------------------------------------------------------------------------------------
+% FUNCIONES
+%----------------------------------------------------------------------------------------
+	 \begin{huge}
+		\textbf{Funciones}\\
+	\end{huge}
+		
+	\begin{itemize}
+		\item \Ovalbox{\bf generador \textunderscore sistema()}: decidimos utilizar un diccionario para almacenar las reglas de cambio del sistema, ya que cada s\'imbolo tiene una traducci\'an \'unica, por lo tanto no habr\'a claves repetidas. \\
+		Adem\'as independientemente del tamaño del diccionario, al acceder a sus elementos, en particular en la funci\'on '\textbf{\textbf{generador \textunderscore sistema}}', lo har\'a en tiempo constante. Funciona con recursi\'on \\
+
+		\item \Ovalbox{\bf  crear \textunderscore svg()} utilizamos una pila para guardar las tortugas, dado que s\'olo puede haber una tortuga activa a la vez, y esta debe ser siempre la \'ultima agregada, por lo que esta estructura, al permitirnos acceder en 				tiempo constante al \'ultimo elemento añadido, era la m\'as adecuada. \\
+
+		\item \Ovalbox{\bf  dibujar()} : es invocada desde \Ovalbox{\bf  crear \textunderscore svg()}, se encarga de apilar las nuevas tortugas e invocar sus m\'etodos dependiendo del comando que lea desde la secuencia. Funciona con recursi\'on \\[0.5cm]
+
+	\end{itemize}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+% PLUMA
+%----------------------------------------------------------------------------------------
+	 \begin{huge}
+		\textbf{Clase Pluma}\\[0.4cm]
+	\end{huge}
+	Modela el comportamiento de la pluma que poseen las tortugas del modulo \Ovalbox{\bf turtle} de Python, la misma controla entre otras cosas el ancho de las l\'ineas y su color.\\[0.3cm]
+ 	Algunos de los m\'etodos implementados en la clase:\\
+	\begin{itemize}
+		\item \Ovalbox{\bf pluma \textunderscore arriba()}, \Ovalbox{\bf pluma \textunderscore abajo()}: Cambian el estado del atributo \textbf{abajo}  de la pluma. \\
+		\item \Ovalbox{\bf  copiar()} : Nos devuelve una copia del estado actual de la \textbf{pluma}, especialmente \'util al momento de clonar una \textbf{tortuga}. \\[0.5cm]
+	\end{itemize}
+
+
+%----------------------------------------------------------------------------------------
+% TORTUGA
+%----------------------------------------------------------------------------------------
+	 \begin{huge}
+		\textbf{Clase Tortuga}\\[0.4cm]
+	\end{huge}
+	Simula el comportamiento de las  tortugas del modulo \Ovalbox{\bf turtle} de Python, implementando operaciones como \Ovalbox{\bf  avanzar(n)} , \Ovalbox{\bf  girar \textunderscore derecha( $\alpha$)} entre otras .\\[0.5cm]
+	Como atributos, la tortuga tiene una \textbf{ubicacion} (coordenadas x e y), una \textbf{Pluma} y una \textbf{orientaci\'on}, \'esta \'ultima nos permite saber en todo momento a donde apunta la tortuga, sobretodo luego de girar en reiteradas ocasiones.\\[0.3cm]
+ 	Algunos de los m\'etodos implementados en la clase:\\
+	\begin{itemize}
+		\item \Ovalbox{\bf  girar \textunderscore derecha( $\alpha$)}, \Ovalbox{\bf  girar \textunderscore izquierda( $\alpha$)}: Cambian el estado de la  \textbf{orientacion} de la tortuga, gir\'andola hacia la derecha o izquierda un \'angulo $\alpha$ . \\
+		\item \Ovalbox{\bf  avanzar(n)} : Actualiza la \textbf{ubicaci\'on} de la \textbf{tortuga}, desplaz\'andola \textbf{n} posiciones en sus coordenadas x e y, en caso de que la \textbf{pluma} se encuentre abajo, la funci\'on tambi\'en se encarga de escribir en el archivo. \\
+		\item \Ovalbox{\bf  circulo(n)} : Si la \textbf{pluma} esta abajo dibuja un c\'iculo con centro en las coordenacas x e y de la \textbf{ubicaci\'on} y radio el \textbf{ancho de la pluma},  toma tambi\'en el color de la pluma.\\
+		\item \Ovalbox{\bf  clonar( )} : Nos devuelve una nueva tortuga con los atributos de la \textbf{tortuga anterior (ubicacion, orientacion y estado de pluma)}, \'este m\'etodo es imprescindible a la hora de \textbf{apilar} y \textbf{desapilar} tortugas en nuestro tortuguero.
+
+
+	\end{itemize}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+% SALIDAS DE SISTEMA
+%----------------------------------------------------------------------------------------
+
+ \begin{Huge}
+	\begin{center}
+		\textbf{Fractales generados \\[1cm]}
+	\end{center}	 
+\end{Huge}
+
+
+\begin{figure}[hbt!]
+	\center
+	\includegraphics[width=0.3\textwidth]{img/ejemplo.png}
+	\caption{
+	\label{fig:my-label} Ejemplo del enunciado. }
+\end{figure}
+
+
+\begin{figure}[hbt!]
+	\center
+	\includegraphics[width=0.3\textwidth]{img/arbol2.png}
+	\caption{
+	\label{fig:my-label} arbol2.sl . }
 \end{figure}
 
 \begin{figure}[hbt!]
 	\center
-	\includegraphics[width=1\textwidth]{img/ejecucion_cmd2.PNG}
+	\includegraphics[width=0.3\textwidth]{img/nieve.png}
 	\caption{
-	\label{fig:my-label} Ejecuci\'on en consola. }
+	\label{fig:my-label} nieve.sl . }
+\end{figure}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+% EXTRAS
+%----------------------------------------------------------------------------------------
+
+ \begin{Huge}
+	\begin{center}
+		\textbf{EXTRAS \\[1cm]}
+	\end{center}	 
+\end{Huge}
+
+\begin{description}
+	\item Para la implementaci\'on de los  \textbf{extras}, utilizamos los m\'etodos de la clase \Ovalbox{\bf Pluma} para modificar los atributos \textbf{ancho} y \textbf{color} de la pluma que posee cada tortuga. \\
+	\item Tambi\'en agregamos a la clase \textbf{Tortuga} el m\'etodo \Ovalbox{\bf  circulo(n)} descrito anteriormente .\\
+	\item Por \'ultimo se ajustaron los \textbf{ifs} de la funci\'on \Ovalbox{\bf  dibujar()} para que aceptara los comandos  \textbf{(a, b, 1, 2 y L)}. \\[1cm]
+\end{description}
+
+\begin{figure}[hbt!]
+	\center
+	\includegraphics[width=0.3\textwidth]{img/ejemplo_extras.png}
+	\caption{
+	\label{fig:my-label} Ejemplo del enunciado, secci\'on extras. }
 \end{figure}
 
 
