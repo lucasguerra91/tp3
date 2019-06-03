@@ -4,7 +4,7 @@ class Pluma:
 	def __init__(self, ancho=1, color="black"):
 		self.ancho = ancho
 		self.color = color
-		self.abajo = False
+		self.abajo = True
 
 	def esta_abajo(self):
 		'''Devuelve la posición de la Pluma:
