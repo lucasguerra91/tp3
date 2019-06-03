@@ -108,9 +108,9 @@ def dibujar(secuencia, tortuguero, unidad, angulo, f):
 			tortuguero.ver_tope().avanzar(unidad, f)
 
 		if c == 'f' or c == 'g':
-			tortuguero.ver_tope().pluma_arriba()
-			tortuguero.ver_tope().avanzar(unidad)
-			tortuguero.ver_tope().pluma_abajo()
+			tortuguero.ver_tope().pluma.pluma_arriba()
+			tortuguero.ver_tope().avanzar(unidad, f)
+			tortuguero.ver_tope().pluma.pluma_abajo()
 
 		if c == '+':
 			tortuguero.ver_tope().girar_derecha(angulo)
