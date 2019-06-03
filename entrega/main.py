@@ -5,6 +5,14 @@ COMANDO = sys.argv
 
 
 def main():
+	'''
+	El programa recibe por comando de consola:
+	1) Un archivo con un ángulo y un sistema de Lindenmayer.
+	2) Una cantidad de iteraciones.
+	3) El nombre del archivo svg a generar.
+	A partir de las instrucciones del archivo genera una imagen fractal en formato svg. 
+	'''
+
 	if len(COMANDO) != 4:
 		print('Comando inválido.')
 		return
