@@ -128,16 +128,16 @@ def dibujar(secuencia, tortuguero, unidad, angulo, f):
 			tortuguero.desapilar()
 
 		if c == 'a':
-			tortuguero.ver_tope().pluma.cambiar_color('blue')
+			tortuguero.ver_tope().obtener_pluma().cambiar_color('blue')
 
 		if c == 'b':
-			tortuguero.ver_tope().pluma.cambiar_color('red')
+			tortuguero.ver_tope().obtener_pluma().cambiar_color('red')
 
 		if c == '1':
-			tortuguero.ver_tope().pluma.cambiar_ancho(1)
+			tortuguero.ver_tope().obtener_pluma().cambiar_ancho(1)
 
 		if c == 'a':
-			tortuguero.ver_tope().pluma.cambiar_ancho(2)
+			tortuguero.ver_tope().obtener_pluma().cambiar_ancho(2)
 
 		if c == 'L':
 			tortuguero.ver_tope().circulo(unidad, f)

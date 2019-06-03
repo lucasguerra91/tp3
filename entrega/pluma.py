@@ -8,7 +8,7 @@ class Pluma:
 
 	def esta_abajo(self):
 		'''Devuelve la posición de la Pluma:
-		   True si está arriba, False si está abajo.'''
+		   True si está abajo, False si está arriba.'''
 		return self.abajo
 
 	def pluma_arriba(self):

@@ -61,3 +61,7 @@ class Tortuga:
 	def clonar(self):
 		"""Devuelve una nueva tortuga con la ubicacion, orientacion y estado de la tortuga actual. """
 		return Tortuga(self.x, self.y, self.orientacion, self.pluma.copiar())
+
+	def obtener_pluma(self):
+		'''Devuelve el atributo Pluma de la Tortuga.'''
+		return self.pluma
