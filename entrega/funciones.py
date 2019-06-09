@@ -77,37 +77,37 @@ def dibujar(secuencia, tortuguero, unidad, angulo, f):
 		if c == 'F' or c == 'G':
 			tortuguero.ver_tope().avanzar(unidad, f)
 
-		if c == 'f' or c == 'g':
+		elif c == 'f' or c == 'g':
 			tortuguero.ver_tope().pluma.pluma_arriba()
 			tortuguero.ver_tope().avanzar(unidad, f)
 			tortuguero.ver_tope().pluma.pluma_abajo()
 
-		if c == '+':
+		elif c == '+':
 			tortuguero.ver_tope().girar_derecha(angulo)
 
-		if c == '-':
+		elif c == '-':
 			tortuguero.ver_tope().girar_izquierda(angulo)
 
-		if c == '|':
+		elif c == '|':
 			tortuguero.ver_tope().girar_derecha(180)
 
-		if c == '[':
+		elif c == '[':
 			tortuguero.apilar(tortuguero.ver_tope().clonar())
 
-		if c == ']':
+		elif c == ']':
 			tortuguero.desapilar()
 
-		if c == 'a':
+		elif c == 'a':
 			tortuguero.ver_tope().obtener_pluma().cambiar_color('blue')
 
-		if c == 'b':
+		elif c == 'b':
 			tortuguero.ver_tope().obtener_pluma().cambiar_color('red')
 
-		if c == '1':
+		elif c == '1':
 			tortuguero.ver_tope().obtener_pluma().cambiar_ancho(1)
 
-		if c == 'a':
+		elif c == 'a':
 			tortuguero.ver_tope().obtener_pluma().cambiar_ancho(2)
 
-		if c == 'L':
+		elif c == 'L':
 			tortuguero.ver_tope().circulo(unidad, f)
