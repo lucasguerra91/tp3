@@ -2,55 +2,25 @@ import tortuga as t
 import pila as pi
 import pluma as p
 
-
-def archivo_invalido():
-	'''Imprime un mensaje de error cuando el archivo es inválido, y lanza un excepción de tipo ValueError.'''
-	print("Archivo de instrucciones inválido.")
-	print('''
-		Ejemplo de un archivo válido:
-
-		27.2
-		X
-		X X-F+G
-		F FG+
-
-		Donde la primera línea es el ángulo, la segunda el axioma y las siguientes líneas \
-		las reglas de cambio, con los símbolos separados de su traducción por un espacio.''')
-	raise ValueError
-
-
 def procesador(archivo):
 	"""Recibe el archivo del fractal, devuelve el angulo, axioma y diccionario de reglas"""
-	try:
-		with open(archivo) as archivo:
-			try:
-				angulo = float(archivo.readline().rstrip('\n'))
+	with open(archivo) as archivo:
 
-			except ValueError:
-				archivo_invalido()
+		angulo = float(archivo.readline().rstrip('\n'))
+		axioma = archivo.readline().rstrip('\n')
 
-			axioma = archivo.readline().rstrip('\n')
+		if not axioma:
+			raise ValueError
 
-			if not axioma:
-				archivo_invalido()
+		reglas = {}
 
-			reglas = {}
+		for linea in archivo:
 
-			for linea in archivo:
+			precesor, sucesor = linea.rstrip('\n').split()
+			reglas[precesor] = sucesor
 
-				try:
-					precesor, sucesor = linea.rstrip('\n').split()
-					reglas[precesor] = sucesor
-
-				except ValueError:
-					archivo_invalido()
-
-			if not reglas:
-				archivo_invalido()
-
-	except IOError:
-		print(f'No se encontró {archivo}.')
-		raise IOError
+		if not reglas:
+			raise ValueError
 
 	return angulo, axioma, reglas
 

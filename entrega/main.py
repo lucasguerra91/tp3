@@ -26,7 +26,8 @@ def main():
 		iteraciones = int(iteraciones)
 
 		if not iteraciones > 0:
-			raise ValueError
+			print('Cantidad de iteraciones inválida.')
+			return
 
 	except:
 		print('Cantidad de iteraciones inválida.')
@@ -35,7 +36,15 @@ def main():
 	try:
 		angulo, axioma, reglas = f.procesador(archivo)
 
+	except IOError:
+		print(f'No se encontró {archivo}.')
+		return
+
 	except:
+		print("Archivo de instrucciones inválido.")
+		print("\nEjemplo de un archivo válido:\n\n27.2\nX\nX X-F+G\nF FG+\n")
+		print("Donde la primera línea es el ángulo, la segunda el axioma y las siguientes líneas \
+las reglas de cambio, con los símbolos separados de su traducción por un espacio.")
 		return
 
 	sistema = f.generador_sistema(axioma, reglas, iteraciones)
